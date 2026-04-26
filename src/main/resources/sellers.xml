@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sellers>
+    <seller id="1">
+        <name>Bonya Bond</name>
+        <country>USA</country>
+        <licenceNumber>LIC-1001</licenceNumber>
+        <email>bonya.bond@example.com</email>
+        <phone>123456789</phone>
+    </seller>
+    <seller id="2">
+        <name>Rita Lopez</name>
+        <country>Spain</country>
+        <licenceNumber>LIC-1002</licenceNumber>
+        <email>rita.lopez@example.com</email>
+        <phone>234567890</phone>
+    </seller>
+    <seller id="3">
+        <name>Kim Kim</name>
+        <country>South Korea</country>
+        <licenceNumber>LIC-1003</licenceNumber>
+        <email>kim.kim@example.com</email>
+        <phone>345678901</phone>
+    </seller>
+    <seller id="4">
+        <name>Vera McDowel</name>
+        <country>UK</country>
+        <licenceNumber>LIC-1004</licenceNumber>
+        <email>vera.mcdowel@example.com</email>
+        <phone>456789012</phone>
+    </seller>
+    <seller id="5">
+        <name>Steward Moss</name>
+        <country>Italy</country>
+        <licenceNumber>LIC-1005</licenceNumber>
+        <email>steward.moss@example.com</email>
+        <phone>567890123</phone>
+    </seller>
+</sellers>

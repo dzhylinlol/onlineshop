@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SellerDAO extends AbstractMySQLDAO implements ISellerDAO {
+
     private static final Logger LOGGER = LogManager.getLogger(SellerDAO.class);
 
     @Override
@@ -36,7 +37,6 @@ public class SellerDAO extends AbstractMySQLDAO implements ISellerDAO {
         } finally {
             releaseConnection(con);
         }
-
         return null;
     }
 

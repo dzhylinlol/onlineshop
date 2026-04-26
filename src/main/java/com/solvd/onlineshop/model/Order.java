@@ -1,5 +1,7 @@
 package com.solvd.onlineshop.model;
 
+import java.util.List;
+
 public class Order {
     private Long id;
     private String confirmationId;
@@ -8,6 +10,7 @@ public class Order {
     private Double personalDiscount;
     private Seller seller;
     private Buyer buyer;
+    private List<OrderProduct> items;
 
     public Order() {
     }
