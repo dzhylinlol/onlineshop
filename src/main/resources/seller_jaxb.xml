@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<seller id="1">
+    <name>LOL</name>
+    <country>Belarus</country>
+    <licenceNumber>LIC-123</licenceNumber>
+    <email>lol@example.com</email>
+    <phone>+123456789</phone>
+</seller>

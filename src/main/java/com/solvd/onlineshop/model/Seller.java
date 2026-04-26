@@ -1,11 +1,21 @@
 package com.solvd.onlineshop.model;
 
+import jakarta.xml.bind.annotation.*;
+
+@XmlRootElement(name = "seller")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Seller {
+    @XmlAttribute
     private Long id;
+    @XmlElement
     private String name;
+    @XmlElement
     private String country;
+    @XmlElement
     private String licenceNumber;
+    @XmlElement
     private String email;
+    @XmlElement
     private String phone;
 
     public Seller() {
