@@ -1,5 +1,7 @@
-package com.solvd.onlineshop.dao;
+package com.solvd.onlineshop.dao.impl;
 
+import com.solvd.onlineshop.dao.AbstractMySQLDAO;
+import com.solvd.onlineshop.dao.ISellerDAO;
 import com.solvd.onlineshop.model.Seller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -1,12 +1,18 @@
 package com.solvd.onlineshop;
 
+import com.solvd.onlineshop.model.Buyer;
 import com.solvd.onlineshop.model.Seller;
+import com.solvd.onlineshop.utilites.JacksonUtil;
 import com.solvd.onlineshop.utilites.JaxbUtil;
 import com.solvd.onlineshop.utilites.SellerDomParser;
 import jakarta.xml.bind.JAXBException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class Main {
@@ -17,13 +23,18 @@ public class Main {
 
         LOGGER.info("DOM Parsing Sellers");
 
-        List<Seller> sellers = SellerDomParser.parseSellers("src/main/resources/sellers.xml");
-
-        if (sellers.isEmpty()) {
-            LOGGER.error("No seller elements found in sellers.xml");
-        } else {
-            LOGGER.info("DOM parsing completed successfully. Number of sellers parsed: {}", sellers.size());
+        try {
+            List<Seller> sellers =
+                    SellerDomParser.parseSellers("src/main/resources/sellers.xml");
+            if (sellers.isEmpty()) {
+                LOGGER.warn("No seller elements found in sellers.xml");
+            } else {
+                LOGGER.info("Parsed {} sellers", sellers.size());
+            }
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            LOGGER.error("Error while parsing sellers.xml", e);
         }
+
 
         LOGGER.info("JAXB Parsing Sellers");
 
@@ -46,6 +57,30 @@ public class Main {
 
         } catch (JAXBException e) {
             LOGGER.error("JAXB error occurred", e);
+        }
+
+        LOGGER.info("Jackson Parsing Buyer");
+
+        String filePath1 = "buyer.json";
+
+        Buyer buyer = new Buyer(
+                1L,
+                "John",
+                "Doe",
+                "john@example.com",
+                "+123456789",
+                LocalDate.of(1990, 5, 15)
+        );
+
+        try {
+            JacksonUtil.serialize(buyer, filePath1);
+            LOGGER.info("Buyer serialized to JSON");
+
+            Buyer parsedBuyer = JacksonUtil.deserialize(filePath1, Buyer.class);
+            LOGGER.info("Deserialized buyer: {}", parsedBuyer);
+
+        } catch (IOException e) {
+            LOGGER.error("Jackson error occurred", e);
         }
     }
 }

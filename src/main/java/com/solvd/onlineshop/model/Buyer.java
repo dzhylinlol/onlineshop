@@ -1,13 +1,23 @@
 package com.solvd.onlineshop.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDate;
 
 public class Buyer {
+    @JsonProperty("id")
     private Long id;
+    @JsonProperty("first_name")
     private String firstName;
+    @JsonProperty("last_name")
     private String lastName;
+    @JsonProperty("email")
     private String email;
+    @JsonProperty("phone")
     private String phone;
+    @JsonProperty("date_of_birth")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dob;
 
     public Buyer() {
