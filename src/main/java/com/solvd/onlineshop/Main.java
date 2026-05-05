@@ -4,7 +4,7 @@ import com.solvd.onlineshop.model.Buyer;
 import com.solvd.onlineshop.model.Seller;
 import com.solvd.onlineshop.utilites.JacksonUtil;
 import com.solvd.onlineshop.utilites.JaxbUtil;
-import com.solvd.onlineshop.utilites.SellerDomParser;
+import com.solvd.onlineshop.utilites.DomParser;
 import jakarta.xml.bind.JAXBException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,17 +24,23 @@ public class Main {
         LOGGER.info("DOM Parsing Sellers");
 
         try {
-            List<Seller> sellers =
-                    SellerDomParser.parseSellers("src/main/resources/sellers.xml");
-            if (sellers.isEmpty()) {
-                LOGGER.warn("No seller elements found in sellers.xml");
-            } else {
-                LOGGER.info("Parsed {} sellers", sellers.size());
-            }
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            LOGGER.error("Error while parsing sellers.xml", e);
-        }
+            DomParser<Seller> parser = new DomParser<>(element -> {
+                Seller seller = new Seller();
+                seller.setId(Long.parseLong(element.getAttribute("id")));
+                seller.setName(com.solvd.onlineshop.utilites.DomParser.getTagValue(element, "name"));
+                seller.setCountry(com.solvd.onlineshop.utilites.DomParser.getTagValue(element, "country"));
+                seller.setLicenceNumber(DomParser.getTagValue(element, "licenceNumber"));
+                seller.setEmail(DomParser.getTagValue(element, "email"));
+                seller.setPhone(com.solvd.onlineshop.utilites.DomParser.getTagValue(element, "phone"));
+                return seller;
+            });
 
+            List<Seller> sellers = parser.parse("src/main/resources/sellers.xml", "seller");
+            sellers.forEach(seller -> LOGGER.info("Parsed seller: {}", seller));
+
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            LOGGER.error("Error parsing sellers XML", e);
+        }
 
         LOGGER.info("JAXB Parsing Sellers");
 
