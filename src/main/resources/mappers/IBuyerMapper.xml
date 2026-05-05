@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.onlineshop.db.mappers.IBuyerMapper">
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO buyers(firstName, lastName, email, phone, dob)
+        VALUES (
+        #{firstName},
+        #{lastName},
+        #{email},
+        #{phone},
+        #{dob}
+        )
+    </insert>
+
+    <select id="getById" parameterType="long" resultMap="BuyerResultMap">
+        SELECT
+        B.id        AS BUYER_ID,
+        B.firstName AS BUYER_FIRST_NAME,
+        B.lastName  AS BUYER_LAST_NAME,
+        B.email     AS BUYER_EMAIL,
+        B.phone     AS BUYER_PHONE,
+        B.dob       AS BUYER_DOB
+        FROM
+        buyers B
+        WHERE B.id = #{id}
+    </select>
+
+    <update id="update">
+        UPDATE buyers
+        <set>
+            <if test="null != firstName">
+                firstName = #{firstName},
+            </if>
+            <if test="null != lastName">
+                lastName = #{lastName},
+            </if>
+            <if test="null != email">
+                email = #{email},
+            </if>
+            <if test="null != phone">
+                phone = #{phone},
+            </if>
+            <if test="null != dob">
+                dob = #{dob},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM buyers
+        WHERE id = #{id}
+    </delete>
+
+    <resultMap type="com.solvd.onlineshop.model.Buyer" id="BuyerResultMap" autoMapping="false">
+        <id     column="BUYER_ID"         property="id" />
+        <result column="BUYER_FIRST_NAME" property="firstName" />
+        <result column="BUYER_LAST_NAME"  property="lastName" />
+        <result column="BUYER_EMAIL"      property="email" />
+        <result column="BUYER_PHONE"      property="phone" />
+        <result column="BUYER_DOB"        property="dob" javaType="java.time.LocalDate"/>
+    </resultMap>
+
+</mapper>

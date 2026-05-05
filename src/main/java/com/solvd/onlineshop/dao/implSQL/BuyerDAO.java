@@ -1,4 +1,4 @@
-package com.solvd.onlineshop.dao.impl;
+package com.solvd.onlineshop.dao.implSQL;
 
 import com.solvd.onlineshop.dao.AbstractMySQLDAO;
 import com.solvd.onlineshop.dao.IBuyerDAO;

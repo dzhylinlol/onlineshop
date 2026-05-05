@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.onlineshop.db.mappers.IOrderMapper">
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO orders(confirmationId, totalSum, seasonalDiscount, personalDiscount, seller_id, buyer_id)
+        VALUES (
+        #{confirmationId},
+        #{totalSum},
+        #{seasonalDiscount},
+        #{personalDiscount},
+        #{seller.id},
+        #{buyer.id}
+        )
+    </insert>
+
+    <select id="getById" parameterType="long" resultMap="OrderResultMap">
+        SELECT
+        O.id                AS ORDER_ID,
+        O.confirmationId    AS ORDER_CONFIRMATION_ID,
+        O.totalSum          AS ORDER_TOTAL_SUM,
+        O.seasonalDiscount  AS ORDER_SEASONAL_DISCOUNT,
+        O.personalDiscount  AS ORDER_PERSONAL_DISCOUNT,
+        O.seller_id         AS ORDER_SELLER_ID,
+        O.buyer_id          AS ORDER_BUYER_ID
+        FROM
+        orders O
+        WHERE O.id = #{id}
+    </select>
+
+    <update id="update">
+        UPDATE orders
+        <set>
+            <if test="null != confirmationId">
+                confirmationId = #{confirmationId},
+            </if>
+            <if test="null != totalSum">
+                totalSum = #{totalSum},
+            </if>
+            <if test="null != seasonalDiscount">
+                seasonalDiscount = #{seasonalDiscount},
+            </if>
+            <if test="null != personalDiscount">
+                personalDiscount = #{personalDiscount},
+            </if>
+            <if test="null != seller">
+                seller_id = #{seller.id},
+            </if>
+            <if test="null != buyer">
+                buyer_id = #{buyer.id},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM orders
+        WHERE id = #{id}
+    </delete>
+
+    <select id="getItemsByOrderId" parameterType="long" resultMap="OrderProductResultMap">
+        SELECT
+        OP.id               AS OP_ID,
+        OP.orderedQuantity  AS OP_ORDERED_QUANTITY,
+        P.id                AS PRODUCT_ID,
+        P.name              AS PRODUCT_NAME,
+        P.description       AS PRODUCT_DESCRIPTION,
+        P.price             AS PRODUCT_PRICE,
+        P.material          AS PRODUCT_MATERIAL
+        FROM
+        order_products OP
+        JOIN
+        products P ON P.id = OP.product_id
+        WHERE OP.order_id = #{orderId}
+    </select>
+
+    <resultMap type="com.solvd.onlineshop.model.Order" id="OrderResultMap" autoMapping="false">
+        <id     column="ORDER_ID"                property="id" />
+        <result column="ORDER_CONFIRMATION_ID"   property="confirmationId" />
+        <result column="ORDER_TOTAL_SUM"         property="totalSum" />
+        <result column="ORDER_SEASONAL_DISCOUNT" property="seasonalDiscount" />
+        <result column="ORDER_PERSONAL_DISCOUNT" property="personalDiscount" />
+        <association property="seller"
+                     column="ORDER_SELLER_ID"
+                     select="com.solvd.onlineshop.db.mappers.ISellerMapper.getById"/>
+        <association property="buyer"
+                     column="ORDER_BUYER_ID"
+                     select="com.solvd.onlineshop.db.mappers.IBuyerMapper.getById"/>
+        <collection property="items"
+                    column="ORDER_ID"
+                    select="getItemsByOrderId"/>
+    </resultMap>
+
+    <resultMap type="com.solvd.onlineshop.model.OrderProduct" id="OrderProductResultMap" autoMapping="false">
+        <id     column="OP_ID"               property="id" />
+        <result column="OP_ORDERED_QUANTITY" property="orderedQuantity" />
+        <association property="product" javaType="com.solvd.onlineshop.model.Product">
+            <id     column="PRODUCT_ID"          property="id" />
+            <result column="PRODUCT_NAME"        property="name" />
+            <result column="PRODUCT_DESCRIPTION" property="description" />
+            <result column="PRODUCT_PRICE"       property="price" />
+            <result column="PRODUCT_MATERIAL"    property="material" />
+        </association>
+    </resultMap>
+
+</mapper>

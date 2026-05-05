@@ -36,3 +36,6 @@ build/
 
 # Maven Wrapper (keep this!)
 !.mvn/wrapper/maven-wrapper.jar
+
+# DB creds
+src/main/resources/database_properties

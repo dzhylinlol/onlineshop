@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solvd.onlineshop.db.mappers.ISellerMapper">
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sellers(name, country, licenceNumber, email, phone)
+        VALUES (
+        #{name},
+        #{country},
+        #{licenceNumber},
+        #{email},
+        #{phone}
+        )
+    </insert>
+
+    <sql id="getSeller">
+        SELECT
+        S.id            AS SELLER_ID,
+        S.name          AS SELLER_NAME,
+        S.country       AS SELLER_COUNTRY,
+        S.licenceNumber AS SELLER_LICENCE_NUMBER,
+        S.email         AS SELLER_EMAIL,
+        S.phone         AS SELLER_PHONE
+        FROM
+        sellers S
+    </sql>
+
+    <select id="getById" parameterType="long" resultMap="SellerResultMap">
+        <include refid="getSeller" />
+        WHERE S.id = #{id}
+    </select>
+
+    <select id="getByLicenceNumber" parameterType="String" resultMap="SellerResultMap">
+        <include refid="getSeller" />
+        WHERE S.licenceNumber = #{licenceNumber}
+    </select>
+
+    <update id="update">
+        UPDATE sellers
+        <set>
+            <if test="null != name">
+                name = #{name},
+            </if>
+            <if test="null != country">
+                country = #{country},
+            </if>
+            <if test="null != licenceNumber">
+                licenceNumber = #{licenceNumber},
+            </if>
+            <if test="null != email">
+                email = #{email},
+            </if>
+            <if test="null != phone">
+                phone = #{phone},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM sellers
+        WHERE id = #{id}
+    </delete>
+
+    <resultMap type="com.solvd.onlineshop.model.Seller" id="SellerResultMap" autoMapping="false">
+        <id     column="SELLER_ID"             property="id" />
+        <result column="SELLER_NAME"           property="name" />
+        <result column="SELLER_COUNTRY"        property="country" />
+        <result column="SELLER_LICENCE_NUMBER" property="licenceNumber" />
+        <result column="SELLER_EMAIL"          property="email" />
+        <result column="SELLER_PHONE"          property="phone" />
+    </resultMap>
+
+</mapper>
